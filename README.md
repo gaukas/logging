@@ -1,2 +1,2 @@
 # logging
-A logging library for Go. 
+A simple logging library for Go.
