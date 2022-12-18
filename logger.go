@@ -16,10 +16,35 @@ const (
 // The Fatalf function will call os.Exit(1) after logging, even when logging
 // level is higher than LOG_FATAL.
 type Logger interface {
+	// Debugf logs a debug message which contains debugging details
+	// that are meaningful to developers for debugging purposes ONLY.
+	// It SHOULD NOT contain sensitive information and SHOULD be trivial
+	// in a production environment.
 	Debugf(format string, args ...interface{})
+
+	// Infof logs an info message which contains information that
+	// may be useful to users for detailed behavior logging.
+	// It MUST not contain any sensitive information and SHOULD
+	// indicate normal/expeted behaviors of the program.
 	Infof(format string, args ...interface{})
+
+	// Warnf logs a warning message which SHOULD be paid attention to.
+	// It MUST not contain any sensitive information and MAY indicate abnormal,
+	// unusual, or unexpected behaviors of the program.
 	Warnf(format string, args ...interface{})
+
+	// Errorf logs an error message which MUST be paid attention to.
+	// It MUST not contain any sensitive information and MUST indicate
+	// abnormal, unusual, or unexpected behaviors of the program which
+	// does not cause the program to exit but may cause the program to
+	// behave incorrectly under certain circumstances.
 	Errorf(format string, args ...interface{})
+
+	// Fatalf logs a fatal message which MUST be paid attention to.
+	// It MUST not contain any sensitive information and MUST indicate
+	// abnormal, unusual, or unexpected behaviors of the program which
+	// prevents the program from continuing to run and causes the
+	// program to crash or exit.
 	Fatalf(format string, args ...interface{})
 }
 
@@ -35,6 +60,7 @@ type MultiLogger struct {
 	loggers []CompatibleLogger
 }
 
+// NewMultiLogger creates a MultiLogger from given loggers.
 func NewMultiLogger(loggers ...CompatibleLogger) *MultiLogger {
 	return &MultiLogger{loggers}
 }
@@ -73,6 +99,7 @@ func (ml *MultiLogger) Fatalf(format string, args ...interface{}) {
 	os.Exit(1)
 }
 
+// DeferredFatalf implements CompatibleLogger interface.
 func (ml *MultiLogger) DeferredFatalf(format string, args ...interface{}) {
 	for _, l := range ml.loggers {
 		l.DeferredFatalf(format, args...)
