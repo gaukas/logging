@@ -96,7 +96,7 @@ func (ml *MultiLogger) Errorf(format string, args ...interface{}) {
 // Fatalf implements Logger interface.
 func (ml *MultiLogger) Fatalf(format string, args ...interface{}) {
 	ml.DeferredFatalf(format, args...)
-	os.Exit(1)
+	os.Exit(1) // skipcq: RVV-A0003
 }
 
 // DeferredFatalf implements CompatibleLogger interface.

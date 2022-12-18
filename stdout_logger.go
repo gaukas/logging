@@ -119,7 +119,7 @@ func (sl *StdoutLogger) Errorf(format string, v ...interface{}) {
 // of the logging level.
 func (sl *StdoutLogger) Fatalf(format string, v ...interface{}) {
 	sl._Fatalf(format, v...)
-	os.Exit(1)
+	os.Exit(1) // skipcq: RVV-A0003
 }
 
 // DeferredFatalf implements the CompatibleLogger interface. It does everything

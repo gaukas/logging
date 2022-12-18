@@ -18,7 +18,7 @@ type FileLogger struct {
 
 // NewFileLogger creates a new FileLogger with the given filename, prefix and flag.
 func NewFileLogger(filename string, prefix string, flag int) *FileLogger {
-	logFile, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	logFile, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		return nil
 	}
@@ -98,7 +98,7 @@ func (fl *FileLogger) Errorf(format string, v ...interface{}) {
 // regardless of the logging level.
 func (fl *FileLogger) Fatalf(format string, v ...interface{}) {
 	fl._Fatalf(format, v...)
-	os.Exit(1)
+	os.Exit(1) // skipcq: RVV-A0003
 }
 
 // DeferredFatalf implements the CompatibleLogger interface. It does everything
